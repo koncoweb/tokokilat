@@ -10,10 +10,34 @@ import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import {CardFooter} from "@/components/ui/card";
+
+const DummySlider = () => {
+    const slides = [
+        {id: 1, imageUrl: 'https://picsum.photos/id/1047/600/200', altText: 'Slide 1'},
+        {id: 2, imageUrl: 'https://picsum.photos/id/1048/600/200', altText: 'Slide 2'},
+        {id: 3, imageUrl: 'https://picsum.photos/id/1049/600/200', altText: 'Slide 3'},
+    ];
+
+    return (
+        <ScrollArea className="w-full">
+            <div className="flex space-x-4 p-4">
+                {slides.map(slide => (
+                    <img
+                        key={slide.id}
+                        src={slide.imageUrl}
+                        alt={slide.altText}
+                        className="w-[600px] h-[200px] rounded-md"
+                    />
+                ))}
+            </div>
+        </ScrollArea>
+    );
+};
 
 export default function Home() {
   const router = useRouter();
@@ -34,10 +58,10 @@ export default function Home() {
         <Card className="w-full">
             <CardHeader>
                 <CardTitle>TokoKilat</CardTitle>
-                <CardDescription>Selamat datang di TokoKilat</CardDescription>
+                <CardDescription>Nikmati pengalaman belanja yang menyenangkan dan cepat!</CardDescription>
             </CardHeader>
             <CardContent>
-            Nikmati pengalaman belanja yang menyenangkan dan cepat!
+                <DummySlider />
             </CardContent>
             <CardFooter>
               </CardFooter>
