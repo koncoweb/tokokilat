@@ -63,8 +63,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-screen">
-           <header className="bg-secondary p-4">
-        <Card className="w-full">
+      
+      <main className="flex-1 overflow-y-auto">
+      <Card className="w-full mb-4">
             <CardHeader className="p-2">
                 <div className="flex justify-around">
                 <GuaranteeItem icon="shield" text="Jaminan Keamanan" color="hsl(var(--primary))" />
@@ -78,8 +79,6 @@ export default function Home() {
             <CardFooter>
               </CardFooter>
         </Card>
-      </header>
-      <main className="flex-1 overflow-y-auto">
         <HomeTab/>
       </main>
       <TabBar />
