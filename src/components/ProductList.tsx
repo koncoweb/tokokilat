@@ -10,12 +10,21 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 import {Product} from '@/services/product-catalog'; // Adjust the import path as needed
-import {Button} from "@/components/ui/button";
-import {AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger} from "@/components/ui/alert-dialog";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
-import {Icons} from "@/components/icons";
-import ProductForm from "@/components/ProductForm";
+import {Button} from '@/components/ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
+import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from '@/components/ui/sheet';
+import {Icons} from '@/components/icons';
+import ProductForm from '@/components/ProductForm';
 
 const ProductList: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -37,7 +46,7 @@ const ProductList: React.FC = () => {
         })) as Product[];
         setProducts(productsList);
       } catch (e: any) {
-        console.error("Error fetching products:", e.message);
+        console.error('Error fetching products:', e.message);
         setError(`Failed to fetch products: ${e.message}`);
       } finally {
         setIsLoading(false);
@@ -50,16 +59,17 @@ const ProductList: React.FC = () => {
   useEffect(() => {
     const productsCollectionRef = collection(db, 'products');
 
-    const unsubscribe = onSnapshot(productsCollectionRef,
-      (snapshot) => {
+    const unsubscribe = onSnapshot(
+      productsCollectionRef,
+      snapshot => {
         const productList = snapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
         })) as Product[];
         setProducts(productList);
       },
-      (error) => {
-        console.error("Error listening to product updates:", error);
+      error => {
+        console.error('Error listening to product updates:', error);
         setError(`Error listening to product updates: ${error.message}`);
       }
     );
@@ -115,26 +125,31 @@ const ProductList: React.FC = () => {
         <div className="mb-4 flex justify-between items-center">
           <h1 className="text-2xl font-semibold">Product List</h1>
           <Button onClick={handleCreateProduct}>
-            <Icons.plus className="w-4 h-4 mr-2"/>
+            <Icons.plus className="w-4 h-4 mr-2" />
             Add Product
           </Button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {products.map((product) => (
+          {products.map(product => (
             <Card key={product.id} className="bg-white shadow-md rounded-md">
               <CardHeader>
                 <CardTitle>{product.name}</CardTitle>
               </CardHeader>
               <CardContent>
                 <img
-                  src={product.imageUrl}
+                  src={product.imageUrl || 'https://picsum.photos/200/100'}
                   alt={product.name}
                   className="w-full h-48 object-cover rounded-md mb-2"
                 />
                 <CardDescription>{product.description}</CardDescription>
                 <div className="flex justify-between items-center mt-2">
-                  <span className="text-lg font-semibold text-primary">${product.price.toFixed(2)}</span>
+                  <div>
+                    <span className="block text-sm text-gray-500">Category: {product.category}</span>
+                    <span className="block text-sm text-gray-500">SKU: {product.sku}</span>
+                    <span className="block text-sm text-gray-500">Stock: {product.stock}</span>
+                  </div>
+                  <span className="text-lg font-semibold text-primary">${product.price?.toFixed(2)}</span>
                   <div className="space-x-2">
                     <Button size="sm" onClick={() => handleEditProduct(product)}>
                       Edit
@@ -142,7 +157,9 @@ const ProductList: React.FC = () => {
 
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
-                        <Button variant="destructive" size="sm">Delete</Button>
+                        <Button variant="destructive" size="sm">
+                          Delete
+                        </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
@@ -152,7 +169,9 @@ const ProductList: React.FC = () => {
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => handleDeleteProduct(product.id)}>Delete</AlertDialogAction>
+                        <AlertDialogAction onClick={() => handleDeleteProduct(product.id)}>
+                          Delete
+                        </AlertDialogAction>
                       </AlertDialogContent>
                     </AlertDialog>
                   </div>

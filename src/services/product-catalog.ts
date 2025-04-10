@@ -10,14 +10,26 @@ export interface Product {
    * The name of the product.
    */
   name: string;
+   /**
+   * The category of the product.
+   */
+  category?: string;
+  /**
+   * The SKU (Stock Keeping Unit) of the product.
+   */
+  sku?: string;
   /**
    * The URL of the product's image.
    */
-  imageUrl: string;
+  imageUrl?: string;
   /**
    * The price of the product.
    */
   price: number;
+  /**
+   * The stock quantity of the product
+   */
+  stock: number;
   /**
    * A short description of the product.
    */
@@ -25,11 +37,16 @@ export interface Product {
   /**
    * The rating of the product from 1 to 5.
    */
-  rating: number;
+  rating?: number;
   /**
    * The popularity score of the product.
    */
-  popularity: number;
+  popularity?: number;
+
+  /**
+   * The stocks location of product
+   */
+  stocks?:{warehouseName:string, quantity: number}[]
 }
 
 /**
@@ -63,20 +80,28 @@ export async function getProducts(
     {
       id: '1',
       name: 'Product 1',
+      category: 'Example Category',
+      sku: 'SKU123',
       imageUrl: 'https://example.com/product1.jpg',
       price: 25.99,
+      stock: 100,
       description: 'This is a description for Product 1.',
       rating: 4.5,
-      popularity: 100
+      popularity: 100,
+      stocks: [{warehouseName: 'Main Warehouse', quantity: 50}, {warehouseName: 'Secondary Warehouse', quantity: 50}]
     },
     {
       id: '2',
       name: 'Product 2',
+      category: 'Another Category',
+      sku: 'SKU456',
       imageUrl: 'https://example.com/product2.jpg',
       price: 49.99,
+      stock: 200,
       description: 'This is a description for Product 2.',
       rating: 3.8,
-      popularity: 120
+      popularity: 120,
+       stocks: [{warehouseName: 'Main Warehouse', quantity: 100}, {warehouseName: 'Secondary Warehouse', quantity: 100}]
     },
   ];
 }
