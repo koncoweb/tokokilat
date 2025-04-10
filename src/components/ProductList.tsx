@@ -4,7 +4,6 @@ import React, {useState, useEffect} from 'react';
 import {db, auth} from '@/lib/firebase';
 import {
   collection,
-  getDocs,
   doc,
   deleteDoc,
   onSnapshot,
@@ -19,7 +18,6 @@ import {
   AlertDialogDescription,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from '@/components/ui/sheet';
@@ -54,12 +52,23 @@ const ProductList: React.FC = () => {
       setError(null);
       try {
         const productsCollectionRef = collection(db, 'products');
-        const productsSnapshot = await getDocs(productsCollectionRef);
-        const productsList = productsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as Product[];
-        setProducts(productsList);
+
+        const unsubscribe = onSnapshot(
+          productsCollectionRef,
+          snapshot => {
+            const productList = snapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data(),
+            })) as Product[];
+            setProducts(productList);
+          },
+          error => {
+            console.error('Error listening to product updates:', error);
+            setError(`Error listening to product updates: ${error.message}`);
+          }
+        );
+        return () => unsubscribe();
+
       } catch (e: any) {
         console.error('Error fetching products:', e.message);
         setError(`Failed to fetch products: ${e.message}`);
@@ -71,36 +80,14 @@ const ProductList: React.FC = () => {
     fetchProducts();
   }, [user]);
 
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-    const productsCollectionRef = collection(db, 'products');
 
-    const unsubscribe = onSnapshot(
-      productsCollectionRef,
-      snapshot => {
-        const productList = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as Product[];
-        setProducts(productList);
-      },
-      error => {
-        console.error('Error listening to product updates:', error);
-        setError(`Error listening to product updates: ${error.message}`);
-      }
-    );
-
-    return () => unsubscribe(); // Cleanup subscription on unmount
-  }, [user]);
 
   const handleDeleteProduct = async (productId: string) => {
     try {
       const productDocRef = doc(db, 'products', productId);
-      await deleteDoc(productDocRef);
+      await deleteDoc(productDocRef, product.imageUrl);
       console.log(`Product with ID ${productId} deleted successfully!`);
-      // setProducts(products.filter(product => product.id !== productId));
+      setProducts(products.filter(product => product.id !== productId));
     } catch (e: any) {
       console.error(`Error deleting product with ID ${productId}:`, e.message);
       setError(`Failed to delete product: ${e.message}`);
