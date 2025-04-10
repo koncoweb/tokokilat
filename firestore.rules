@@ -1,3 +1,4 @@
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -8,14 +9,6 @@ service cloud.firestore {
     match /products/{productId} {
       // Allow write access to authenticated users
       allow create, update, delete: if request.auth != null;
-    }
-
-    // Any other collection can be added here with specific rules
-    // Example: Users collection
-    match /users/{userId} {
-      // Allow the user to read and write their own document
-      allow get, update: if request.auth != null && request.auth.uid == userId;
-      allow create: if request.auth != null && request.auth.uid == userId;
     }
   }
 }
