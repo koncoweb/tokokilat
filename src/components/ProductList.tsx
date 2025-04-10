@@ -26,6 +26,7 @@ import {Icons} from '@/components/icons';
 import ProductForm from '@/components/ProductForm';
 import {onAuthStateChanged} from "firebase/auth";
 import { cn } from "@/lib/utils";
+import {useToast} from "@/hooks/use-toast";
 
 const ProductList: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -34,6 +35,7 @@ const ProductList: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
     const [user, setUser] = useState<any>(null);
+    const {toast} = useToast();
 
     useEffect(() => {
         const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
@@ -66,6 +68,11 @@ const ProductList: React.FC = () => {
                     error => {
                         console.error('Error listening to product updates:', error);
                         setError(`Error listening to product updates: ${error.message}`);
+                        toast({
+                            variant: "destructive",
+                            title: "Error",
+                            description: `Failed to fetch products: ${error.message}`,
+                        });
                     }
                 );
                 return () => unsubscribe();
@@ -73,13 +80,18 @@ const ProductList: React.FC = () => {
             } catch (e: any) {
                 console.error('Error fetching products:', e.message);
                 setError(`Failed to fetch products: ${e.message}`);
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: `Failed to fetch products: ${e.message}`,
+                });
             } finally {
                 setIsLoading(false);
             }
         };
 
         fetchProducts();
-    }, [user]);
+    }, [user, toast]);
 
   const handleDeleteProduct = async (productId: string) => {
     try {
@@ -87,9 +99,19 @@ const ProductList: React.FC = () => {
       await deleteDoc(productDocRef);
       console.log(`Product with ID ${productId} deleted successfully!`);
       setProducts(products.filter(product => product.id !== productId));
+      toast({
+        title: "Success",
+        description: "Product deleted successfully.",
+      });
+
     } catch (e: any) {
       console.error(`Error deleting product with ID ${productId}:`, e.message);
       setError(`Failed to delete product: ${e.message}`);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: `Failed to delete product: ${e.message}`,
+      });
     }
   };
 
@@ -138,7 +160,7 @@ const ProductList: React.FC = () => {
           {products.map(product => (
             <Card key={product.id} className="bg-white shadow-md rounded-md">
               <CardHeader className="p-2">
-                <CardTitle className="text-sm">{product.name}</CardTitle>
+                <CardTitle className="text-xs">{product.name}</CardTitle>
               </CardHeader>
               <CardContent className="p-2">
                 <img
