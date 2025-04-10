@@ -22,12 +22,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
-      </body>
-    </html>
-  );
+  try {
+    return (
+      <html lang="en">
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          {children}
+        </body>
+      </html>
+    );
+  } catch (error) {
+    console.error("RootLayout error:", error);
+    return (
+      <html lang="en">
+        <body>
+          <h1>An unexpected error occurred.</h1>
+        </body>
+      </html>
+    );
+  }
 }
 
