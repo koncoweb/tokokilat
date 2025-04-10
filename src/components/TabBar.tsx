@@ -1,34 +1,34 @@
 'use client';
 
 import React from 'react';
-import {Home, Search, ShoppingCart, List, User} from "@/components/icons";
+import { Icons } from "@/components/icons";
 import {useRouter, usePathname} from 'next/navigation';
 
 const tabs = [
   {
     name: 'Home',
     href: '/',
-    icon: Home,
+    icon: Icons.home,
   },
   {
     name: 'Search',
     href: '/search',
-    icon: Search,
+    icon: Icons.search,
   },
   {
     name: 'Cart',
     href: '/cart',
-    icon: ShoppingCart,
+    icon: Icons.shoppingCart,
   },
   {
     name: 'Products',
     href: '/products',
-    icon: List,
+    icon: Icons.list,
   },
   {
     name: 'Profile',
     href: '/profile',
-    icon: User,
+    icon: Icons.user,
   },
 ];
 
