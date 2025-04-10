@@ -39,14 +39,29 @@ const ProductForm: React.FC<ProductFormProps> = ({product, onClose, onProductUpd
     e.preventDefault();
     setIsLoading(true);
 
-    const newProduct: Omit<Product, 'id'> = {
+    // Safely parse the price, rating, and popularity
+    const parsedPrice = parseFloat(price);
+    const parsedRating = parseFloat(rating);
+    const parsedPopularity = parseFloat(popularity);
+
+    const newProduct: Partial<Product> = {
       name,
-      imageUrl,
-      price: parseFloat(price),
       description,
-      rating: parseFloat(rating),
-      popularity: parseFloat(popularity),
     };
+
+    if (imageUrl) {
+      newProduct.imageUrl = imageUrl;
+    }
+    if (!isNaN(parsedPrice)) {
+      newProduct.price = parsedPrice;
+    }
+    if (!isNaN(parsedRating)) {
+      newProduct.rating = parsedRating;
+    }
+    if (!isNaN(parsedPopularity)) {
+      newProduct.popularity = parsedPopularity;
+    }
+
 
     try {
       if (product) {
