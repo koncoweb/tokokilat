@@ -27,10 +27,10 @@ const ProductForm: React.FC<ProductFormProps> = ({product, onClose, onProductUpd
     if (product) {
       setName(product.name);
       setImageUrl(product.imageUrl);
-      setPrice(product.price.toString());
+      setPrice(product.price?.toString() || '');
       setDescription(product.description);
-      setRating(product.rating.toString());
-      setPopularity(product.popularity.toString());
+      setRating(product.rating != null ? product.rating.toString() : '');
+      setPopularity(product.popularity != null ? product.popularity.toString() : '');
     }
   }, [product]);
 
