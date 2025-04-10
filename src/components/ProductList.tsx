@@ -18,6 +18,7 @@ import {
   AlertDialogDescription,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger // Import AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from '@/components/ui/sheet';
@@ -85,7 +86,7 @@ const ProductList: React.FC = () => {
   const handleDeleteProduct = async (productId: string) => {
     try {
       const productDocRef = doc(db, 'products', productId);
-      await deleteDoc(productDocRef, product.imageUrl);
+      await deleteDoc(productDocRef);
       console.log(`Product with ID ${productId} deleted successfully!`);
       setProducts(products.filter(product => product.id !== productId));
     } catch (e: any) {
