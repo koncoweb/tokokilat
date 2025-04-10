@@ -1,7 +1,7 @@
 'use client';
 
 import React, {useState, useEffect} from 'react';
-import {db} from '@/lib/firebase';
+import {db, auth} from '@/lib/firebase';
 import {
   collection,
   getDocs,
@@ -25,6 +25,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/compo
 import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from '@/components/ui/sheet';
 import {Icons} from '@/components/icons';
 import ProductForm from '@/components/ProductForm';
+import {onAuthStateChanged} from "firebase/auth";
 
 const ProductList: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -32,8 +33,22 @@ const ProductList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+
+    return () => unsubscribeAuth();
+  }, []);
+
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
     const fetchProducts = async () => {
       setIsLoading(true);
       setError(null);
@@ -54,9 +69,12 @@ const ProductList: React.FC = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
+    if (!user) {
+      return;
+    }
     const productsCollectionRef = collection(db, 'products');
 
     const unsubscribe = onSnapshot(
@@ -75,7 +93,7 @@ const ProductList: React.FC = () => {
     );
 
     return () => unsubscribe(); // Cleanup subscription on unmount
-  }, []);
+  }, [user]);
 
   const handleDeleteProduct = async (productId: string) => {
     try {
