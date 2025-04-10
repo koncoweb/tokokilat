@@ -26,7 +26,7 @@ const RegisterPage: React.FC = () => {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-1 overflow-y-auto">
-        <div className="container mx-auto py-6">
+        <div className="container mx-auto py-8 px-4 md:px-6">
           <h1 className="text-2xl font-semibold mb-4">Register</h1>
 
           {error && <div className="text-red-500 mb-4">{error}</div>}
