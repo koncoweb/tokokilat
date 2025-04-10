@@ -25,6 +25,7 @@ import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTri
 import {Icons} from '@/components/icons';
 import ProductForm from '@/components/ProductForm';
 import {onAuthStateChanged} from "firebase/auth";
+import { cn } from "@/lib/utils";
 
 const ProductList: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -136,10 +137,10 @@ const ProductList: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map(product => (
             <Card key={product.id} className="bg-white shadow-md rounded-md">
-              <CardHeader>
-                <CardTitle>{product.name}</CardTitle>
+              <CardHeader className="p-2">
+                <CardTitle className="text-sm">{product.name}</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-2">
                 <img
                   src={product.imageUrl || 'https://picsum.photos/200/100'}
                   alt={product.name}
@@ -148,9 +149,9 @@ const ProductList: React.FC = () => {
                 <CardDescription>{product.description}</CardDescription>
                 <div className="flex flex-col justify-between items-center mt-2">
                   <div>
-                    <span className="block text-sm text-gray-500">Category: {product.category}</span>
-                    <span className="block text-sm text-gray-500">SKU: {product.sku}</span>
-                    <span className="block text-sm text-gray-500">Stock: {product.stock}</span>
+                    <span className="block text-xs text-gray-500">Category: {product.category}</span>
+                    <span className="block text-xs text-gray-500">SKU: {product.sku}</span>
+                    <span className="block text-xs text-gray-500">Stock: {product.stock}</span>
                   </div>
                   <span className="text-lg font-semibold text-primary">${product.price?.toFixed(2)}</span>
                       <div className="flex space-x-2">
