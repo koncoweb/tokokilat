@@ -32,56 +32,53 @@ const ProductList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<any>(null);
 
-  useEffect(() => {
-    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-    });
+    useEffect(() => {
+        const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+            setUser(user);
+        });
 
-    return () => unsubscribeAuth();
-  }, []);
+        return () => unsubscribeAuth();
+    }, []);
 
+    useEffect(() => {
+        if (!user) {
+            return;
+        }
 
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
+        const fetchProducts = async () => {
+            setIsLoading(true);
+            setError(null);
+            try {
+                const productsCollectionRef = collection(db, 'products');
 
-    const fetchProducts = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const productsCollectionRef = collection(db, 'products');
+                const unsubscribe = onSnapshot(
+                    productsCollectionRef,
+                    snapshot => {
+                        const productList = snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            ...doc.data(),
+                        })) as Product[];
+                        setProducts(productList);
+                    },
+                    error => {
+                        console.error('Error listening to product updates:', error);
+                        setError(`Error listening to product updates: ${error.message}`);
+                    }
+                );
+                return () => unsubscribe();
 
-        const unsubscribe = onSnapshot(
-          productsCollectionRef,
-          snapshot => {
-            const productList = snapshot.docs.map(doc => ({
-              id: doc.id,
-              ...doc.data(),
-            })) as Product[];
-            setProducts(productList);
-          },
-          error => {
-            console.error('Error listening to product updates:', error);
-            setError(`Error listening to product updates: ${error.message}`);
-          }
-        );
-        return () => unsubscribe();
+            } catch (e: any) {
+                console.error('Error fetching products:', e.message);
+                setError(`Failed to fetch products: ${e.message}`);
+            } finally {
+                setIsLoading(false);
+            }
+        };
 
-      } catch (e: any) {
-        console.error('Error fetching products:', e.message);
-        setError(`Failed to fetch products: ${e.message}`);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [user]);
-
-
+        fetchProducts();
+    }, [user]);
 
   const handleDeleteProduct = async (productId: string) => {
     try {

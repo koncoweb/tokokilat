@@ -50,8 +50,8 @@ const ProductForm: React.FC<ProductFormProps> = ({product, onClose, onProductUpd
       setStock(product.stock?.toString() || '');
       setDescription(product.description);
       setImageUrl(product.imageUrl || '');
-      setRating(product.rating != null ? product.rating.toString() : '');
-      setPopularity(product.popularity != null ? product.popularity.toString() : '');
+       setRating(product.rating != null ? product.rating.toString() : '');
+       setPopularity(product.popularity != null ? product.popularity.toString() : '');
       setStocks(product.stocks || []);
     }
   }, [product]);
@@ -103,7 +103,6 @@ const ProductForm: React.FC<ProductFormProps> = ({product, onClose, onProductUpd
     if (!isNaN(parsedPrice)) {
       newProduct.price = parsedPrice;
     }
-
     if (!isNaN(parsedRating)) {
       newProduct.rating = parsedRating;
     }
@@ -111,6 +110,7 @@ const ProductForm: React.FC<ProductFormProps> = ({product, onClose, onProductUpd
     if (!isNaN(parsedPopularity)) {
       newProduct.popularity = parsedPopularity;
     }
+
 
     try {
       if (product) {
