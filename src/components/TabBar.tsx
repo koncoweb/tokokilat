@@ -21,6 +21,11 @@ const tabs = [
     icon: Icons.shoppingCart,
   },
   {
+    name: 'Products',
+    href: '/products',
+    icon: Icons.list,
+  },
+  {
     name: 'Profile',
     href: '/profile',
     icon: Icons.user,
