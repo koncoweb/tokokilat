@@ -2,14 +2,13 @@
 
 import React, {useState, useEffect} from 'react';
 import {auth} from '@/lib/firebase';
-import {signInWithEmailAndPassword, signOut, onAuthStateChanged} from 'firebase/auth';
+import {signOut, onAuthStateChanged} from 'firebase/auth';
 import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
+import {useRouter} from "next/navigation";
 
 const ProfilePage: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [user, setUser] = useState<any>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -19,51 +18,31 @@ const ProfilePage: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
-  const handleSignIn = async () => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (error: any) {
-      alert(`Sign in failed: ${error.message}`);
-    }
-  };
-
   const handleSignOut = async () => {
     try {
       await signOut(auth);
+      router.push('/login'); // Redirect to login page after sign out
     } catch (error: any) {
       alert(`Sign out failed: ${error.message}`);
     }
   };
 
+  if (!user) {
+    return (
+      <div className="container mx-auto py-6">
+        <h1 className="text-2xl font-semibold mb-4">Profile</h1>
+        <p>Please <a href="/login" className="text-primary">login</a> to view your profile.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto py-6">
       <h1 className="text-2xl font-semibold mb-4">Profile</h1>
-
-      {user ? (
-        <div>
-          <p>Welcome, {user.email}!</p>
-          <Button onClick={handleSignOut}>Sign Out</Button>
-        </div>
-      ) : (
-        <div>
-          <Input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mb-2"
-          />
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mb-2"
-          />
-          <Button onClick={handleSignIn}>Sign In</Button>
-        </div>
-      )}
-
+      <div>
+        <p>Welcome, {user.email}!</p>
+        <Button onClick={handleSignOut}>Sign Out</Button>
+      </div>
       <p>This is the profile page. You can display user information and settings here.</p>
     </div>
   );
