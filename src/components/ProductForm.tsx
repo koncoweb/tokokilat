@@ -2,11 +2,12 @@
 
 import React, {useState, useEffect} from 'react';
 import {db} from '@/lib/firebase';
-import {collection, addDoc, doc, updateDoc, deleteDoc} from 'firebase/firestore';
+import {collection, addDoc, doc, updateDoc} from 'firebase/firestore';
 import {Product} from '@/services/product-catalog'; // Adjust the import path as needed
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
+import {SheetClose} from "@/components/ui/sheet";
 
 interface ProductFormProps {
   product?: Product;
@@ -155,9 +156,11 @@ const ProductForm: React.FC<ProductFormProps> = ({product, onClose, onProductUpd
 
 
       <div className="mt-6 flex justify-end">
-        <Button type="button" onClick={onClose} className="mr-2">
-          Cancel
-        </Button>
+        <SheetClose asChild>
+          <Button type="button" variant="secondary" className="mr-2">
+            Close
+          </Button>
+        </SheetClose>
         <Button type="submit" disabled={isLoading}>
           {isLoading ? 'Loading...' : product ? 'Update Product' : 'Create Product'}
         </Button>
