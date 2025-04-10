@@ -65,14 +65,14 @@ export default function Home() {
     <div className="flex flex-col h-screen">
            <header className="bg-secondary p-4">
         <Card className="w-full">
-            <CardHeader>
+            <CardHeader className="p-2">
                 <div className="flex justify-around">
                 <GuaranteeItem icon="shield" text="Jaminan Keamanan" color="hsl(var(--primary))" />
                 <GuaranteeItem icon="check" text="Originalitas Produk" color="hsl(var(--accent))" />
                 <GuaranteeItem icon="arrowRight" text="Pengembalian Mudah" color="hsl(var(--destructive))" />
                 </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-2">
                 <DummySlider />
             </CardContent>
             <CardFooter>
@@ -86,4 +86,3 @@ export default function Home() {
     </div>
   );
 }
-
