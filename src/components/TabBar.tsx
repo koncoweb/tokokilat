@@ -8,27 +8,27 @@ const tabs = [
   {
     name: 'Home',
     href: '/',
-    icon: Icons.home,
+    icon: Icons.Home,
   },
   {
     name: 'Search',
     href: '/search',
-    icon: Icons.search,
+    icon: Icons.Search,
   },
   {
     name: 'Cart',
     href: '/cart',
-    icon: Icons.shoppingCart,
+    icon: Icons.ShoppingCart,
   },
   {
     name: 'Products',
     href: '/products',
-    icon: Icons.list,
+    icon: Icons.List,
   },
   {
     name: 'Profile',
     href: '/profile',
-    icon: Icons.user,
+    icon: Icons.User,
   },
 ];
 
