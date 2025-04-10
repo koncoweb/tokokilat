@@ -83,7 +83,6 @@ const ProductForm: React.FC<ProductFormProps> = ({product, onClose, onProductUpd
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          required
           className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         />
       </div>
@@ -96,7 +95,6 @@ const ProductForm: React.FC<ProductFormProps> = ({product, onClose, onProductUpd
           id="imageUrl"
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
-          required
           className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         />
       </div>
@@ -109,7 +107,6 @@ const ProductForm: React.FC<ProductFormProps> = ({product, onClose, onProductUpd
           id="price"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
-          required
           className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         />
       </div>
@@ -135,7 +132,6 @@ const ProductForm: React.FC<ProductFormProps> = ({product, onClose, onProductUpd
           id="rating"
           value={rating}
           onChange={(e) => setRating(e.target.value)}
-          required
           className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         />
       </div>
@@ -149,7 +145,6 @@ const ProductForm: React.FC<ProductFormProps> = ({product, onClose, onProductUpd
           id="popularity"
           value={popularity}
           onChange={(e) => setPopularity(e.target.value)}
-          required
           className="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         />
       </div>
