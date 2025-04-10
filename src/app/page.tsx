@@ -6,7 +6,6 @@ import {useEffect} from "react";
 import {auth} from "@/lib/firebase";
 import {useRouter} from "next/navigation";
 import {onAuthStateChanged} from "firebase/auth";
-import {Toaster} from "@/components/ui/toaster";
 
 export default function Home() {
   const router = useRouter();
@@ -26,7 +25,6 @@ export default function Home() {
       <main className="flex-1 overflow-y-auto">
         <HomeTab/>
       </main>
-      <Toaster/>
       <TabBar />
     </div>
   );
