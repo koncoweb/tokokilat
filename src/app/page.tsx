@@ -15,6 +15,15 @@ import {
   } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {CardFooter} from "@/components/ui/card";
+import { Icons } from "@/components/icons";
+import React from "react";
+
+const GuaranteeItem = ({ icon, text, color }: { icon: keyof typeof Icons; text: string; color: string }) => (
+    <div className="flex flex-col items-center justify-center p-2">
+        {React.createElement(Icons[icon], { className: "w-8 h-8 mb-1", color: color })}
+        <span className="text-xs text-center">{text}</span>
+    </div>
+);
 
 const DummySlider = () => {
     const slides = [
@@ -57,8 +66,11 @@ export default function Home() {
            <header className="bg-secondary p-4">
         <Card className="w-full">
             <CardHeader>
-                <CardTitle>TokoKilat</CardTitle>
-                <CardDescription>Nikmati pengalaman belanja yang menyenangkan dan cepat!</CardDescription>
+                <div className="flex justify-around">
+                <GuaranteeItem icon="shield" text="Jaminan Keamanan" color="hsl(var(--primary))" />
+                <GuaranteeItem icon="check" text="Originalitas Produk" color="hsl(var(--accent))" />
+                <GuaranteeItem icon="arrowRight" text="Pengembalian Mudah" color="hsl(var(--destructive))" />
+                </div>
             </CardHeader>
             <CardContent>
                 <DummySlider />
@@ -74,5 +86,4 @@ export default function Home() {
     </div>
   );
 }
-
 
