@@ -6,6 +6,7 @@ import {signInWithEmailAndPassword} from 'firebase/auth';
 import {useRouter} from 'next/navigation';
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
+import TabBar from "@/components/TabBar";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -23,29 +24,34 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-2xl font-semibold mb-4">Login</h1>
+    <div className="flex flex-col h-screen">
+      <div className="flex-1 overflow-y-auto">
+        <div className="container mx-auto py-6">
+          <h1 className="text-2xl font-semibold mb-4">Login</h1>
 
-      {error && <div className="text-red-500 mb-4">{error}</div>}
+          {error && <div className="text-red-500 mb-4">{error}</div>}
 
-      <Input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="mb-2"
-      />
-      <Input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="mb-2"
-      />
-      <Button onClick={handleSignIn}>Sign In</Button>
-      <p className="mt-4">
-        Don't have an account? <a href="/register" className="text-primary">Register</a>
-      </p>
+          <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="mb-2"
+          />
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="mb-2"
+          />
+          <Button onClick={handleSignIn}>Sign In</Button>
+          <p className="mt-4">
+            Don't have an account? <a href="/register" className="text-primary">Register</a>
+          </p>
+        </div>
+      </div>
+      <TabBar/>
     </div>
   );
 };

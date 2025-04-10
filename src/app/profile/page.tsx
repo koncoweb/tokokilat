@@ -5,6 +5,7 @@ import {auth} from '@/lib/firebase';
 import {signOut, onAuthStateChanged} from 'firebase/auth';
 import {Button} from "@/components/ui/button";
 import {useRouter} from "next/navigation";
+import TabBar from "@/components/TabBar";
 
 const ProfilePage: React.FC = () => {
   const [user, setUser] = useState<any>(null);
@@ -29,21 +30,31 @@ const ProfilePage: React.FC = () => {
 
   if (!user) {
     return (
-      <div className="container mx-auto py-6">
-        <h1 className="text-2xl font-semibold mb-4">Profile</h1>
-        <p>Please <a href="/login" className="text-primary">login</a> to view your profile.</p>
+      <div className="flex flex-col h-screen">
+        <div className="flex-1 overflow-y-auto">
+          <div className="container mx-auto py-6">
+            <h1 className="text-2xl font-semibold mb-4">Profile</h1>
+            <p>Please <a href="/login" className="text-primary">login</a> to view your profile.</p>
+          </div>
+        </div>
+        <TabBar/>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-2xl font-semibold mb-4">Profile</h1>
-      <div>
-        <p>Welcome, {user.email}!</p>
-        <Button onClick={handleSignOut}>Sign Out</Button>
+    <div  className="flex flex-col h-screen">
+      <div className="flex-1 overflow-y-auto">
+        <div className="container mx-auto py-6">
+          <h1 className="text-2xl font-semibold mb-4">Profile</h1>
+          <div>
+            <p>Welcome, {user.email}!</p>
+            <Button onClick={handleSignOut}>Sign Out</Button>
+          </div>
+          <p>This is the profile page. You can display user information and settings here.</p>
+        </div>
       </div>
-      <p>This is the profile page. You can display user information and settings here.</p>
+      <TabBar/>
     </div>
   );
 };
