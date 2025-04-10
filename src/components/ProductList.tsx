@@ -146,38 +146,38 @@ const ProductList: React.FC = () => {
                   className="w-full h-48 object-cover rounded-md mb-2"
                 />
                 <CardDescription>{product.description}</CardDescription>
-                <div className="flex justify-between items-center mt-2">
+                <div className="flex flex-col justify-between items-center mt-2">
                   <div>
                     <span className="block text-sm text-gray-500">Category: {product.category}</span>
                     <span className="block text-sm text-gray-500">SKU: {product.sku}</span>
                     <span className="block text-sm text-gray-500">Stock: {product.stock}</span>
                   </div>
                   <span className="text-lg font-semibold text-primary">${product.price?.toFixed(2)}</span>
-                  <div className="space-x-2">
-                    <Button size="sm" onClick={() => handleEditProduct(product)}>
+                      <div className="flex space-x-2">
+                      <Button size="sm" onClick={() => handleEditProduct(product)}>
                       Edit
-                    </Button>
+                      </Button>
 
-                    <AlertDialog>
+                      <AlertDialog>
                       <AlertDialogTrigger asChild>
-                        <Button variant="destructive" size="sm">
-                          Delete
-                        </Button>
+                      <Button variant="destructive" size="sm">
+                      Delete
+                      </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This action cannot be undone. This will permanently delete the product from our servers.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => handleDeleteProduct(product.id)}>
-                          Delete
-                        </AlertDialogAction>
+                      <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete the product from our servers.
+                      </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => handleDeleteProduct(product.id)}>
+                      Delete
+                      </AlertDialogAction>
                       </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
+                      </AlertDialog>
+                      </div>
                 </div>
               </CardContent>
             </Card>
