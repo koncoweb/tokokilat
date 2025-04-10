@@ -1,30 +1,53 @@
 'use client';
 
 import React, {useState, useEffect} from 'react';
-import {Product, getProducts} from "@/services/product-catalog";
+import {Product} from "@/services/product-catalog";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import {toast} from "@/hooks/use-toast";
 import {useRouter} from "next/navigation";
 import {Input} from "@/components/ui/input";
 import {Icons} from "@/components/icons";
-import {AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger} from "@/components/ui/alert-dialog";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {db} from "@/lib/firebase";
+import {collection, getDocs, query, orderBy, where} from "firebase/firestore";
 
 const HomeTab: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'price' | 'popularity' | 'ratings'>('popularity');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const router = useRouter();
 
   useEffect(() => {
     const loadProducts = async () => {
-      const fetchedProducts = await getProducts(searchQuery, sortBy, sortOrder);
-      setProducts(fetchedProducts);
+      try {
+        let productsQuery = collection(db, "products");
+        // Apply search query
+        if (searchQuery) {
+          productsQuery = query(productsQuery, where("name", ">=", searchQuery), where("name", "<=", searchQuery + "\uf8ff"));
+        }
+
+        // Apply sorting
+        let orderByField = sortBy;
+        if (sortBy === 'ratings') {
+          orderByField = 'rating';
+        } else if (sortBy === 'popularity') {
+          orderByField = 'popularity';
+        }
+        productsQuery = query(productsQuery, orderBy(orderByField, sortOrder));
+
+        const querySnapshot = await getDocs(productsQuery);
+        const productList: Product[] = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Product[];
+        setProducts(productList);
+      } catch (error: any) {
+        console.error("Error fetching products:", error);
+      }
     };
 
     loadProducts();
@@ -101,13 +124,13 @@ const HomeTab: React.FC = () => {
             </CardHeader>
             <CardContent>
               <img
-                src={product.imageUrl}
+                src={product.imageUrl || 'https://picsum.photos/200/100'}
                 alt={product.name}
                 className="w-full h-48 object-cover rounded-md mb-2"
               />
               <CardDescription>{product.description}</CardDescription>
               <div className="flex justify-between items-center mt-2">
-                <span className="text-lg font-semibold text-primary">${product.price.toFixed(2)}</span>
+                <span className="text-lg font-semibold text-primary">${product.price?.toFixed(2)}</span>
                 <Button size="sm" onClick={() => handleAddToCart(product)}>
                   Add to Cart
                 </Button>

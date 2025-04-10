@@ -25,15 +25,15 @@ export interface Product {
   /**
    * The price of the product.
    */
-  price: number;
+  price?: number;
   /**
    * The stock quantity of the product
    */
-  stock: number;
+  stock?: number;
   /**
    * A short description of the product.
    */
-  description: string;
+  description?: string;
   /**
    * The rating of the product from 1 to 5.
    */
@@ -47,6 +47,8 @@ export interface Product {
    * The stocks location of product
    */
   stocks?:{warehouseName:string, quantity: number}[]
+    createdAt?: any;
+    updatedAt?: any;
 }
 
 /**
@@ -74,34 +76,5 @@ export async function getProducts(
   sortOrder?: SortOrder,
   filters?: string[]
 ): Promise<Product[]> {
-  // TODO: Implement this by calling an API.
-
-  return [
-    {
-      id: '1',
-      name: 'Product 1',
-      category: 'Example Category',
-      sku: 'SKU123',
-      imageUrl: 'https://example.com/product1.jpg',
-      price: 25.99,
-      stock: 100,
-      description: 'This is a description for Product 1.',
-      rating: 4.5,
-      popularity: 100,
-      stocks: [{warehouseName: 'Main Warehouse', quantity: 50}, {warehouseName: 'Secondary Warehouse', quantity: 50}]
-    },
-    {
-      id: '2',
-      name: 'Product 2',
-      category: 'Another Category',
-      sku: 'SKU456',
-      imageUrl: 'https://example.com/product2.jpg',
-      price: 49.99,
-      stock: 200,
-      description: 'This is a description for Product 2.',
-      rating: 3.8,
-      popularity: 120,
-       stocks: [{warehouseName: 'Main Warehouse', quantity: 100}, {warehouseName: 'Secondary Warehouse', quantity: 100}]
-    },
-  ];
+  return []
 }
